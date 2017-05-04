@@ -1,0 +1,7 @@
+name: S3 Zip Image Upload
+description: 'Upload images on AMAZON S3'
+package: Media
+core: 8.x
+dependencies:
+  - s3fs
+configure = 'admin/config/media/image_upload'
