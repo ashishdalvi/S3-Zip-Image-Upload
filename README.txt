@@ -28,7 +28,7 @@ download awssdk2 library from https://www.drupal.org/project/awssdk2 and
 extract the files to the "/sites/all/libraries/" directory.
 3. s3 file system :-  You will need to
 download s3fs module from https://www.drupal.org/project/s3fs and
-extract the files to the "/sites/all/modules/contrib/" directory.
+extract the files to the "/modules/contrib/" directory.
 Or you can download this module using
 drush command "drush dl s3fs" after that do "drush en s3fs" it will
 download the awssdk2 library as well automatically.
@@ -41,7 +41,7 @@ Installation & Use
    for further information.
 * 1. Download project from https://www.drupal.org/s3_zip_image_upload and unzip
      the project.
-* 2. Place the project under '/sites/all/modules/contrib' directory.
+* 2. Place the project under '/modules/contrib' directory.
 * 3. Install it from module installation page.
 
 Configuration
