@@ -162,14 +162,14 @@ class MultipleImageUploadForm extends FormBase {
           'progress_message' => t('Uploading Files to S3...'),
           'error_message' => t('Error!'),
           // Function call on completion of batch process.
-          'finished' => 's3_zip_image_upload_data_finish',
+          'finished' => '\Drupal\s3_zip_upload_image\ImageUploadBatch::s3_zip_image_upload_data_finish',
         ];
         foreach ($images_created as $images) {
           $download_batch = [
             'title' => t('Upload Zip Images...'),
             'operations' => [
               [
-                's3_zip_image_upload_data',
+                '\Drupal\s3_zip_upload_image\ImageUploadBatch::s3_zip_image_upload_data',
                 [
                   $images,
                   $count,
