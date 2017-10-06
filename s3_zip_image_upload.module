@@ -34,17 +34,17 @@ function s3_zip_image_upload_help($path, $arg) {
  * Defines external library for module.
  */
 function s3_zip_image_upload_libraries_info() {
-  $libraries['amazon-s3-php-class'] = array(
+  $libraries['amazon-s3-php-class'] = [
     'name' => 'Amazon S3 php class',
     'vendor url' => 'https://github.com/tpyo/amazon-s3-php-class',
     'download url' => 'https://github.com/tpyo/amazon-s3-php-class/archive/master.zip',
     'version callback' => 's3_zip_image_upload_version_callback',
-    'files' => array(
-      'php' => array(
+    'files' => [
+      'php' => [
         'S3.php',
-      ),
-    ),
-  );
+      ],
+    ],
+  ];
 
   return $libraries;
 }
@@ -59,6 +59,9 @@ function s3_zip_image_upload_version_callback() {
   return TRUE;
 }
 
+/**
+ * Processing batch for image upload.
+ */
 function s3_zip_image_upload_data($images, $count, $highest_row, $selected_type, $aws_url, $directory_name, $bucket_name, $access_key, $secret_key, &$context) {
 
   if (!class_exists('S3')) {
@@ -73,7 +76,7 @@ function s3_zip_image_upload_data($images, $count, $highest_row, $selected_type,
   }
   // Instantiate the class.
   $s3 = new S3(AWSACCESSKEY, AWSSECRETKEY);
-  $context['message'] = t("Now processing :i of :highest_row", array(':i' => $count, ":highest_row" => $highest_row));
+  $context['message'] = t("Now processing :i of :highest_row", [':i' => $count, ":highest_row" => $highest_row]);
   foreach ($images as $file) {
     $servername = $_SERVER['DOCUMENT_ROOT'];
     $explode = explode('/', $servername);
@@ -101,31 +104,24 @@ function s3_zip_image_upload_data($images, $count, $highest_row, $selected_type,
   }
 }
 
+/**
+ * Implements batch process finish.
+ */
 function s3_zip_image_upload_data_finished($success, $results, $operations) {
 
 // The 'success' parameter means no fatal PHP errors were detected. All
 // other error management should be handled using 'results'.
   if ($success) {
-    drupal_set_message(t('Successfully Uploaded @result to Amazon S3.', array(
-      '@result' => ucfirst($results),
-            )
-        )
-    );
+    drupal_set_message(t('Successfully Uploaded @result to Amazon S3.', ['@result' => ucfirst($results),]));
   }
-  if ($success) {
-    drupal_set_message(t('Successfully Uploaded @result to Amazon S3.', array(
-      '@result' => ucfirst($results),
-            )
-        )
-    );
-  }
+
 // Display any errors while batch processing.
   else {
     $error_operation = reset($operations);
-    $message = t('An error occurred while processing %error_operation with arguments: @arguments', array(
+    $message = t('An error occurred while processing %error_operation with arguments: @arguments', [
       '%error_operation' => $error_operation[0],
       '@arguments' => print_r($error_operation[1], TRUE),
-        )
+        ]
     );
     drupal_set_message($message, 'error');
   }

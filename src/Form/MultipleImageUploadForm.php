@@ -35,67 +35,67 @@ class MultipleImageUploadForm extends FormBase {
     }
     $s3fs_bucket = \Drupal::state()->get('s3f s_bucket');
     $s3fs_awssdk2_access_key = \Drupal::state()->get('s3fs_awssdk2_access_key');
-    $form['file_type'] = array(
+    $form['file_type'] = [
       '#type' => 'select',
       '#title' => t('File Type'),
-      '#options' => array(
+      '#options' => [
         'images' => t('Images'),
-      ),
+      ],
       '#default_value' => 'images',
       '#disabled' => TRUE,
       '#description' => t('Allowed file extensions : jpg,jpeg,png'),
-    );
-    $form['aws_creds'] = array(
+    ];
+    $form['aws_creds'] = [
       '#type' => 'fieldset',
       '#title' => t('SHOW AMAZON WEB SERVICES CREDENTIALS'),
       '#collapsible' => TRUE,
       '#collapsed' => FALSE,
-    );
-    $form['aws_creds']['destination_path'] = array(
+    ];
+    $form['aws_creds']['destination_path'] = [
       '#type' => 'textfield',
       '#title' => t('Amazon S3 path'),
       '#default_value' => "http://$s3fs_bucket.s3.amazonaws.com/s3fs-public",
       '#disabled' => TRUE,
-    );
-    $form['aws_creds']['bucket_name'] = array(
+    ];
+    $form['aws_creds']['bucket_name'] = [
       '#type' => 'textfield',
       '#title' => t('S3 Bucket Name'),
       '#default_value' => $s3fs_bucket,
       '#disabled' => TRUE,
-    );
-    $form['aws_creds']['access_key'] = array(
+    ];
+    $form['aws_creds']['access_key'] = [
       '#type' => 'textfield',
       '#title' => t('Amazon Web Services Access Key'),
       '#default_value' => $s3fs_awssdk2_access_key,
       '#disabled' => TRUE,
-    );
-    $form['aws_creds']['secret_key'] = array(
+    ];
+    $form['aws_creds']['secret_key'] = [
       '#type' => 'textfield',
       '#title' => t('Amazon Web Services Secret Key'),
       '#default_value' => $s3fs_awssdk2_secret_key,
       '#disabled' => TRUE,
-    );
+    ];
 
-    $form['aws_creds']['folder_name'] = array(
+    $form['aws_creds']['folder_name'] = [
       '#type' => 'textfield',
       '#title' => t('S3 folder name'),
       '#description' => t('Name of the folder where images will store on AWS'),
       '#required' => TRUE,
-    );
-    $form['zip_file'] = array(
+    ];
+    $form['zip_file'] = [
       '#type' => 'managed_file',
       '#title' => t('Upload Zip File'),
       '#size' => 48,
       '#description' => t('Warning : MAX SIZE LIMIT : 1GB. !break ZIP File should contain Images directly, not in Folder. !breakAllowed Image Extesion are: JPG, JPEG, PNG'),
-      '#upload_validators' => array(
-        'file_validate_extensions' => array('zip ZIP'),
-        'file_validate_size' => array(MAX_FILE_SIZE * 1024 * 1024),
-      ),
-    );
-    $form['submit'] = array(
+      '#upload_validators' => [
+        'file_validate_extensions' => ['zip ZIP'],
+        'file_validate_size' => [MAX_FILE_SIZE * 1024 * 1024],
+      ],
+    ];
+    $form['submit'] = [
       '#type' => 'submit',
       '#value' => 'Upload',
-    );
+    ];
     return $form;
   }
 
@@ -105,10 +105,9 @@ class MultipleImageUploadForm extends FormBase {
 //    $filename = $file->get('filename')->value;
 //    $file_mime = $file->get('filemime')->value;
     $file_uri = $file->get('uri')->value;
-    ksm($file_uri);
     $selected_type = $form_state->getValue('file_type');
     $directory_name = $form_state->getValue('folder_name');
-    $bucket_name = \Drupal::state()->get('s3f s_bucket');
+    $bucket_name = \Drupal::state()->get('s3fs_bucket');
     $aws_url = "http://$bucket_name.s3.amazonaws.com/s3fs-public";
     $access_key = \Drupal::state()->get('s3fs_awssdk2_access_key');
     $secret_key = \Drupal::state()->get('s3fs_awssdk2_access_key');
@@ -127,7 +126,7 @@ class MultipleImageUploadForm extends FormBase {
         while ($zip_entry = zip_read($zip)) {
           $product_filename = zip_entry_name($zip_entry);
           $product_extension = 'jpg';
-          if (!in_array($product_extension, array('jpg', 'JPG', 'jpeg', 'JPEG'))) {
+          if (!in_array($product_extension, ['jpg', 'JPG', 'jpeg', 'JPEG'])) {
             $count++;
             $invalid_files .= $count . ')' . $product_filename . '<br/>';
           }
@@ -158,20 +157,20 @@ class MultipleImageUploadForm extends FormBase {
         $images_created = array_chunk($files, 25);
         $highest_row = count($files);
         $count = 0;
-        $download_batch = array(
+        $download_batch = [
           'title' => t('Uploading Images'),
           'progress_message' => t('Uploading Files to S3...'),
           'error_message' => t('Error!'),
           // Function call on completion of batch process.
           'finished' => 's3_zip_image_upload_data_finish',
-        );
+        ];
         foreach ($images_created as $images) {
-          $download_batch = array(
+          $download_batch = [
             'title' => t('Upload Zip Images...'),
-            'operations' => array(
-              array(
+            'operations' => [
+              [
                 's3_zip_image_upload_data',
-                array(
+                [
                   $images,
                   $count,
                   $highest_row,
@@ -181,10 +180,10 @@ class MultipleImageUploadForm extends FormBase {
                   $bucket_name,
                   $access_key,
                   $secret_key,
-                ),
-              ),
-            ),
-          );
+                ],
+              ],
+            ],
+          ];
         }
         batch_set($download_batch);
       }
