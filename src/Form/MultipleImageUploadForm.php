@@ -35,6 +35,7 @@ class MultipleImageUploadForm extends FormBase {
     }
     $s3fs_bucket = \Drupal::state()->get('s3f s_bucket');
     $s3fs_awssdk2_access_key = \Drupal::state()->get('s3fs_awssdk2_access_key');
+    $s3fs_awssdk2_secret_key = \Drupal::state()->get('s3fs_awssdk2_secret_key');
     $form['file_type'] = [
       '#type' => 'select',
       '#title' => t('File Type'),
@@ -82,6 +83,7 @@ class MultipleImageUploadForm extends FormBase {
       '#description' => t('Name of the folder where images will store on AWS'),
       '#required' => TRUE,
     ];
+    $Max_file_size = 10; // Max file size = 10 MB.
     $form['zip_file'] = [
       '#type' => 'managed_file',
       '#title' => t('Upload Zip File'),
@@ -89,7 +91,7 @@ class MultipleImageUploadForm extends FormBase {
       '#description' => t('Warning : MAX SIZE LIMIT : 1GB. !break ZIP File should contain Images directly, not in Folder. !breakAllowed Image Extesion are: JPG, JPEG, PNG'),
       '#upload_validators' => [
         'file_validate_extensions' => ['zip ZIP'],
-        'file_validate_size' => [MAX_FILE_SIZE * 1024 * 1024],
+        'file_validate_size' => [$Max_file_size * 1024 * 1024],
       ],
     ];
     $form['submit'] = [
@@ -110,7 +112,7 @@ class MultipleImageUploadForm extends FormBase {
     $bucket_name = \Drupal::state()->get('s3fs_bucket');
     $aws_url = "http://$bucket_name.s3.amazonaws.com/s3fs-public";
     $access_key = \Drupal::state()->get('s3fs_awssdk2_access_key');
-    $secret_key = \Drupal::state()->get('s3fs_awssdk2_access_key');
+    $secret_key = \Drupal::state()->get('s3fs_awssdk2_secret_key');
     if (is_writable("public://$directory_name")) {
       drupal_mkdir("public://$directory_name");
     }
@@ -189,7 +191,7 @@ class MultipleImageUploadForm extends FormBase {
       }
     }
     else {
-      form_set_error('folder_name', t('Unable to create directory. Please check public:// permissions'));
+      drupal_set_message(t('Unable to create directory. Please check public:// permissions'), 'error');
     }
   }
 
