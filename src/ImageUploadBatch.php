@@ -7,8 +7,7 @@ class ImageUploadBatch {
   /**
    * Processing batch for image upload.
    */
-  public static function s3_zip_image_upload_data($images, $count, $highest_row, $selected_type, $aws_url, $directory_name, $bucket_name, $access_key, $secret_key, &$context) {
-
+  public static function imageUploadData($images, $count, $highest_row, $selected_type, $aws_url, $directory_name, $bucket_name, $access_key, $secret_key, &$context) {
     if (!class_exists('S3')) {
       include '/libraries/amazon-s3-php-class/S3.php';
     }
@@ -52,10 +51,11 @@ class ImageUploadBatch {
   /**
    * Implements batch process finish.
    */
-  public function s3_zip_image_upload_data_finished($success, $results, $operations) {
+  function imageUploadDataFinishedCallback($success, $results, $operations) {
 
 // The 'success' parameter means no fatal PHP errors were detected. All
 // other error management should be handled using 'results'.
+    ksm($operations);
     if ($success) {
       drupal_set_message(t('Successfully Uploaded @result to Amazon S3.', ['@result' => ucfirst($results),]));
     }

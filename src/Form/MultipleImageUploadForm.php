@@ -159,19 +159,19 @@ class MultipleImageUploadForm extends FormBase {
         $images_created = array_chunk($files, 25);
         $highest_row = count($files);
         $count = 0;
-        $download_batch = [
+        $upload_batch = [
           'title' => t('Uploading Images'),
           'progress_message' => t('Uploading Files to S3...'),
           'error_message' => t('Error!'),
           // Function call on completion of batch process.
-          'finished' => '\Drupal\s3_zip_upload_image\ImageUploadBatch::s3_zip_image_upload_data_finished',
+          'finished' => '\Drupal\s3_zip_image_upload\ImageUploadBatch::imageUploadDataFinishedCallback',
         ];
         foreach ($images_created as $images) {
-          $download_batch = [
+          $upload_batch = [
             'title' => t('Upload Zip Images...'),
             'operations' => [
               [
-                '\Drupal\s3_zip_upload_image\ImageUploadBatch::s3_zip_image_upload_data',
+                '\Drupal\s3_zip_image_upload\ImageUploadBatch::imageUploadData',
                 [
                   $images,
                   $count,
@@ -187,7 +187,7 @@ class MultipleImageUploadForm extends FormBase {
             ],
           ];
         }
-        batch_set($download_batch);
+        batch_set($upload_batch);
       }
     }
     else {
