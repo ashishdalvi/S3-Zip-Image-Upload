@@ -55,7 +55,6 @@ class ImageUploadBatch {
 
 // The 'success' parameter means no fatal PHP errors were detected. All
 // other error management should be handled using 'results'.
-    ksm($operations);
     if ($success) {
       drupal_set_message(t('Successfully Uploaded @result to Amazon S3.', ['@result' => ucfirst($results),]));
     }
