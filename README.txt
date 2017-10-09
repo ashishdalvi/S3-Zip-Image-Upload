@@ -1,5 +1,5 @@
 *********************************************************
------------------------S3 Zip Image Upload-------------------
+-----------------------S3 Zip Image Upload---------------
 *********************************************************
 
 Introduction
@@ -37,7 +37,7 @@ download the awssdk2 library as well automatically.
 Installation & Use
 -------------------
 * Install as you would normally install a contributed Drupal module. See:
-   https://drupal.org/documentation/install/modules-themes/modules-7
+   https://www.drupal.org/docs/8/extending-drupal-8/installing-drupal-8-modules
    for further information.
 * 1. Download project from https://www.drupal.org/s3_zip_image_upload and unzip
      the project.
@@ -64,4 +64,6 @@ Features
 
 Current maintainers:
 ---------
-* Neha Patil (neha_patil) - https://www.drupal.org/u/neha_patil 
+* Neha Patil (neha_patil) - https://www.drupal.org/u/neha_patil
+* Anurag Shah (anurags) - https://www.drupal.org/u/anurags
+* Yash Khandelwal (yash_khandelwal) - https://www.drupal.org/u/yash_khandelwal
